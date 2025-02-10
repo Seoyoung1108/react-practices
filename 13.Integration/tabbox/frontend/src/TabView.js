@@ -7,7 +7,6 @@ function TabView({data}) {
         for(let i=0; i<7; i++){
             if(data[i].active===true){
                 setView(data[i].contents);
-                console.log(data[i].contents);
                 break;
             }
         }
