@@ -1,6 +1,9 @@
 import React from 'react';
 
 function TitleBar02() {
+    const onClick = () => {
+        console.log('function');
+    }
     return (
         <div>
             <h4>

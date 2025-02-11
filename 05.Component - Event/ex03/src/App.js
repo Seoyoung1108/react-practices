@@ -13,7 +13,13 @@ export default function App() {
             <form
                 name='addForm'
                 method='post'
-                action='/do/not/go'>
+                action='/do/not/go'
+                onSubmit={(e)=>{
+                  e.preventDefault();
+                  console.log(e.target.message.value);
+                  console.log(e.target.message);  
+                  console.log(e.target.name);  
+                }}>
                 <input
                     type='text'
                     name='message'
