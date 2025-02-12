@@ -1,25 +1,21 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 function TabItem(props) {
-  function onClick(){
+  const [selected, setSelected] = useState(props.active);
 
+  function onClick(){
+    setSelected(!selected);
   }
     
   return (
-      <>
-      {(() => {
-          if (props.active === true) {
-            return (
-              <li className="active" onClick={onClick}>{props.name}</li>
-            );
-          } else {
-            return (
-              <li>{props.name}</li>
-            );
-          }
-        })()}
-      </>
+    <li className={(() => {
+      if (selected === true) {
+        return "active";
+      } else {
+        return "";
+      }
+    })()} onClick={onClick}>{props.name}</li>
   );
 }
-
+  
 export default TabItem;

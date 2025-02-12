@@ -1,23 +1,54 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './assets/Form.css';
 
 export default function Form() {
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [isEmailValid, setIsEmailValid]=useState(false);
+
+    const changeName = (e)=>{
+        setName(e.target.value);
+    }
+
+    const changeEmail = (e)=>{
+        setEmail(e.target.value);
+        const re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        const valid = re.test(e.target.value);
+        setIsEmailValid(valid);
+    }
+
+    const onSubmitJoinForm = (e)=>{
+        e.preventDefault();
+        console.log({
+            name:name,
+            email:email
+        });
+    }
+
     return (
-        <form id="joinForm" name="joinForm" method="post" action="/do/not/post">
+        <form id="joinForm" name="joinForm" method="post" action="/do/not/post" onSubmit={onSubmitJoinForm}>
             <label htmlFor="name">이름</label>
             <input
+                value={name}
                 id="name"
                 name="name"
                 type="text"
-                autoComplete="off" />
+                autoComplete="off"
+                onChange={changeName} />
 
             <label htmlFor="email">이메일</label>
             <input
+                value={email}
                 id="email"
                 name="email"
                 type="text"
-                autoComplete="off"/>
-
+                autoComplete="off"
+                onChange={changeEmail}/>
+            {
+                email===""?
+                    <b></b>: isEmailValid?
+                        <b>O</b>: <b>X</b>
+            }
 
             <label htmlFor="password">패스워드</label>
             <input id="password" name="password" type="password" autoComplete="off" />
