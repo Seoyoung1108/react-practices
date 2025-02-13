@@ -24,7 +24,7 @@ module.exports = function(env) {
                     {
                         loader: 'css-loader',
                         options: {
-                            modules: true
+                            modules: false
                         }
                     }, 
                     'sass-loader'
