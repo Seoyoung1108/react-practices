@@ -1,12 +1,12 @@
 import React from 'react';
 import TabItem from './TabItem';
 
-function Tabs({data}) {
+function Tabs({data, selectTab}) {
     
     return (
         <ul>
             {data.map((tab)=>{
-                return <TabItem name={tab.name} active={tab.active} />
+                return <TabItem no={tab.no} name={tab.name} active={tab.active} selectTab={selectTab} />
             })}
         </ul>
     );

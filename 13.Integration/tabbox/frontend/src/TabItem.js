@@ -1,15 +1,14 @@
 import React, {useState} from 'react';
 
 function TabItem(props) {
-  const [selected, setSelected] = useState(props.active);
 
   function onClick(){
-    setSelected(!selected);
+    props.selectTab(props.no);
   }
     
   return (
     <li className={(() => {
-      if (selected === true) {
+      if (props.active === true) {
         return "active";
       } else {
         return "";

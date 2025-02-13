@@ -1,0 +1,29 @@
+import React, {useState} from 'react';
+import RegisterForm from './RegisterForm';
+import SearchBar from './SearchBar';
+import Emaillist from './Emaillist';
+import './assets/scss/App.scss';
+
+import data from './assets/json/data.js';
+
+function App() {
+    const [emails, setEmails] = useState(data);
+
+    const searchEmail = function(keyword){
+        const keywordLowerCase = keyword.toLowerCase();
+        const targetEmails = data.filter(({firstName, lastName, email})=>{
+            return firstName.toLowerCase().indexOf(keywordLowerCase)!==-1||lastName.toLowerCase().indexOf(keywordLowerCase)!==-1||email.toLowerCase().indexOf(keywordLowerCase)!==-1
+        })
+        setEmails(!keywordLowerCase? data: targetEmails);
+    }
+
+    return (
+        <div id={'App'}>
+            <RegisterForm />
+            <SearchBar searchEmail={searchEmail}/>
+            <Emaillist emails={emails} />
+        </div>
+    );
+}
+
+export default App;

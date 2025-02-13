@@ -32,12 +32,31 @@ export default function App() {
     
           return () => clearInterval(timerId);
         }, []);
-      };
-    
-      useInterval(() => {
-        setCurrentTime(getCurrentTime);
-        setTicks(ticks+1);
-      }, 1000);
+    };
+                                                                                                                                                                                                                                                          
+    useInterval(() => {
+      setCurrentTime(getCurrentTime);
+      setTicks(x=>x+1);
+    }, 1000);
+
+    /**
+     * useEffect(()=>{
+     *  const intervalId = setInterval(()=>{
+     *    setCurrentTime(getCurrentTime);
+          setTicks(x=>x+1);
+        },1000)
+        
+     *  return ()=>{
+     *    clearInterval(intervalId);
+     *  }
+     * },[])
+     * 
+     * 
+     * 
+     */
+
+
+
 
     return (
         ticks % 5 === 0? null:
