@@ -1,20 +1,10 @@
 import React, {useState, useEffect} from 'react';
 
-function TabView({data}) {
-    const [view, setView] = useState("");
-
-    useEffect(() => {
-        for(let i=0; i<7; i++){
-            if(data[i].active===true){
-                setView(data[i].contents);
-                break;
-            }
-        }
-      }, []);
+function TabView({contents}) {
 
     return (
-        <div>
-            {view}
+        <div className='Tab_Biew'>
+            {contents}
         </div>
     );
 }

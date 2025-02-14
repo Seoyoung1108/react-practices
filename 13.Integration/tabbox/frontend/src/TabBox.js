@@ -23,7 +23,7 @@ function TabBox({data}) {
 
                 return rest;
             })} selectTab={selectTab} />
-            <TabView data={data} selectTab={selectTab} />
+            <TabView contents={data[activeIndex].contents} />
         </div>
     );
 }
