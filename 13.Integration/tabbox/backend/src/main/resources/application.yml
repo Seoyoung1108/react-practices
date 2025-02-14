@@ -12,8 +12,7 @@ spring:
 # common configuration
 spring:
    mvc:
-      static-path-pattern: /assets/**
-      throw-exception-if-no-handler-found: true
+      static-path-pattern: /**
 
    web:
       resources:
@@ -57,7 +56,7 @@ spring:
       cache: false     
  
 server:
-   port: 8080
+   port: 8088
     
 logging:
    pattern:
