@@ -18,11 +18,11 @@ function Card({card}) {
                 return "Card_Title";
             }
             })()} onClick={onClick}>{card.title}</div>
-          <div className='Card_Details' style={{display:isOpen?'':'none'}}>
+          <div className='Card_Details'>
 
             {card.description}
 
-            <div className='Task_List'>
+            <div className='Task_List' style={{display:isOpen?'':'none'}}>
               <ul>
                 {tasks && tasks.map((task)=>{
                     return <Task task={task} />
