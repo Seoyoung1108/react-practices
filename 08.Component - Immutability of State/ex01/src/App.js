@@ -73,10 +73,10 @@ function App() {
             <hr/>
 
             <p>{`배송지:${order.receive}`}</p>
-            <p>{`결제수단:${order.payment.method}`}</p>
+            <p>{`결제수단:${payment.method}`}</p>
             <p>{'상품'}</p>
             <ul>
-                {order.goods.map((g,i)=>{
+                {goods.map((g,i)=>{
                     return <li key={i}>{`${g.name}:${g.price}:${g.amount}`}</li>
                 })}
             </ul>
