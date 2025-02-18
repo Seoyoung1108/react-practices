@@ -6,6 +6,8 @@ import styled from 'styled-components';
 import './assets/scss/App.scss';
 import * as stylesModal from './assets/scss/Modal.scss';
 import serialize from 'form-serialize';
+import axios from 'axios';
+import update from 'react-addons-update';
 
 const CreateForm = styled.form``;
 const UpdateForm = styled.form``;
@@ -19,7 +21,12 @@ ReactModal.setAppElement("body");
 function App() {
     const refCreateForm = useRef(null);
     const [items, setItems] = useState(null);
-    const [modalOpen, setModalOpen] = useState(false);
+
+    const [modalData, setModalData] = useState({
+        open: false,
+        itemType: '',
+        itemName: ''
+    })
 
 
     // read items
@@ -51,8 +58,29 @@ function App() {
         fetchItems();
     },[])
 
+    const fetchItem = async (id) => {
+        try{
+            const response = await axios.get(`/item/${id}`);
+            const jsonResult = response.data;
+            
+            setModalData(update(modalData, {
+                open: {
+                    $set: true
+                },
+                itemName: {
+                    $set: jsonResult.data.name
+                },
+                itemType:{
+                    $set: jsonResult.data.type
+                }
+            }))
 
-    // create items
+        } catch(error) {
+            error.response ? `${error.response.status}` : error;
+        }
+    }
+
+    // create item
 
     const addItem = async (item) => {
         try {
@@ -118,9 +146,32 @@ function App() {
 
     }
 
-    function onclickDelete(){
+
+    // delete item
+    
+    const deleteItem = async (id) => {
+        try{
+            const response = await axios.delete(`/item/${id}`);
+            const jsonResult = response.data;
+            console.log(jsonResult);
+            
+            setItems(items.filter((el)=>{
+                console.log(el.id);
+                el.id !== jsonResult.data;
+            }))
+
+            window.location.reload();
+
+        } catch(error) {
+            error.response ? `${error.response.status}` : error;
+        }
+    }
+
+    // update item
+    const updateItem = async (id) => {
         
     }
+
 
     return (
         <div id='App'>
@@ -168,8 +219,8 @@ function App() {
                     items?.map((item, index) => <Item key={item.id}>
                         <h4>
                             <b title={'[R]ead (get)'}
-                            onClick={()=>setModalOpen(!modalOpen)}>{item.name}</b>
-                            <button>{'[D]elete (delete)'}</button>
+                            onClick={()=>fetchItem(item.id)}>{item.name}</b>
+                            <button onClick={()=>deleteItem(item.id)}>{'[D]elete (delete)'}</button>
                         </h4>
                         <div>
                             <span>
@@ -185,16 +236,26 @@ function App() {
 
 
             <Modal
-                isOpen={modalOpen}
-                onRequestClose={() => setModalOpen(!modalOpen)}
+                isOpen={modalData.open}
+                onRequestClose={() => setModalData(update(modalData, {
+                    open: {
+                        $set: false
+                    }
+                }))}
                 className={stylesModal.Modal}
                 overlayClassName={stylesModal.Overlay}
                 style={{content: {width: 280}}}>
                 <h3>Update Item</h3>
-                <UpdateForm>
+                <form onSubmit={()=>{updateForm()}}>
                     <label>TYPE</label>
                     {' '}
-                    <select name={'type'}>
+                    <select name={'type'} value={modalData.itemType} onChange={(e)=>{
+                        setModalData(update(modalData, {
+                            itemType: {
+                                $set: e.target.value
+                            }
+                        }))
+                    }}>
                         <option>BOOK</option>
                         <option>CLOTHE</option>
                         <option>MUSIC</option>
@@ -206,10 +267,16 @@ function App() {
                     <br/><br/>
                     <label>NAME</label>
                     {' '}
-                    <input type={'text'} name={'name'} />   
+                    <input type={'text'} name={'name'} value ={modalData.itemName} onChange={(e)=>{
+                        setModalData(update(modalData, {
+                            itemName: {
+                                $set: e.target.value
+                            }
+                        }))
+                    }}/>   
                     <hr />
                     <input type={"submit"} value={'[U]pdate (update)'} />
-                </UpdateForm>
+                </form>
             </Modal>
 
         </div>

@@ -3,6 +3,7 @@ package ajax.controller.api;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -44,11 +45,6 @@ public class ItemController {
 	@GetMapping
 	public ResponseEntity<JsonResult<List<Item>>> read(){
 		log.info("Request[GET /api]");
-		/*
-		if(true) {
-			throw new RuntimeException("test exception");
-		}
-		*/
 		
 		return ResponseEntity
 			.status(HttpStatus.OK)
@@ -56,21 +52,26 @@ public class ItemController {
 		
 	}
 	
+	@GetMapping("/{id}")
+	public ResponseEntity<JsonResult<Item>> read(@PathVariable Long id){
+		log.info("Request[GET /api/{id}]", id);
+	
+		
+		return ResponseEntity
+				.status(HttpStatus.OK)
+				.body(JsonResult.success(items.stream().filter(t -> t.getId()==id).findAny().orElse(null)));
+	}
+	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<JsonResult<Long>> delete(@PathVariable Long id){
 		log.info("Request[DELETE /api/{id}]", id);
 		
-		Long maxId = Optional
-			.ofNullable(items.isEmpty()? null: items.getFirst())
-			.map(t -> t.getId())
-			.orElse(0L);
-		// Empty일 수 있으므로
-		
-		item.setId(maxId+1);
-		items.addFirst(item);
+		boolean result = items.removeIf(t -> t.getId()==id);
 		
 		return ResponseEntity
 				.status(HttpStatus.OK)
-				.body(JsonResult.success(item));
+				.body(JsonResult.success((result) ? id : -1));
 	}
+	
+	
 }
