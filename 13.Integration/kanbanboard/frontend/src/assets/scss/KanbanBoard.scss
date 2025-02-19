@@ -58,10 +58,16 @@
                         list-style-type: none; 
                     
                         .Task{
+                            .Task_Remove { 
+                                border: 0;
+                                background-color: transparent;
+                                cursor: pointer;
+                            }
+
                             .Task_Remove:after { 
                                 display: inline-block; 
                                 color: #d66; 
-                                content: '✖'; 
+                                content: '✖';
                             }
                         }
 

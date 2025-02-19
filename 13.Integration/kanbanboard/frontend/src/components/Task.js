@@ -8,13 +8,10 @@ function Task({task, cardNo, onUpdateTasks1, onUpdateTasks2}) {
 
     const deleteTask = async (id) => {
         try{
-            const response = await axios.delete(`/kanbanboard/task/${id}`,{params:{cardno}});
+            const response = await axios.delete(`/kanbanboard/task/${id}`);
             const jsonResult = response.data;
-            console.log(jsonResult.data);
             
             onUpdateTasks1(jsonResult.data);
-
-            //window.location.reload();
 
         } catch(error) {
             error.response ? `${error.response.status}` : error;
@@ -24,39 +21,13 @@ function Task({task, cardNo, onUpdateTasks1, onUpdateTasks2}) {
     const updateTask = async (id) => {
         isDone = 1-isDone;
 
-        const params = new URLSearchParams();
-        params.append('isDone', isDone);
-        params.append('cardno', cardno);
 
         try{
-            const response = await axios.put(`/kanbanboard/task/${id}`, {params:params}, {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                }
-            });
+            const response = await axios.put(`/kanbanboard/task/${id}?isDone=${isDone}&cardno=${cardno}`);
             const jsonResult = response.data;
             console.log(jsonResult);
 
             onUpdateTasks2(jsonResult.data);
-
-            /*
-           
-            setModalData(update(modalData,{
-                open: {
-                    $set: false
-                },
-                itemId: {
-                    $set: 0
-                },
-                itemType: {
-                    $set: ''
-                },
-                itemName: {
-                    $set: ''
-                }
-            }))
-            */
 
         } catch(error) {
             error.response ? `${error.response.status}` : error;

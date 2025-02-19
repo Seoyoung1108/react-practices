@@ -73,8 +73,8 @@ function Card({card}) {
 
     const updateTasks1 = (deletedId) => {
       setTasks(tasks.filter((task)=>{
-        //console.log(task.no, deletedId);
-        task.no !== deletedId;
+        console.log(task.no, deletedId);
+        task.no != deletedId;
       }))
     };
 

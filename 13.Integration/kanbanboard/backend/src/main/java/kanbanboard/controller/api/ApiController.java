@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -64,6 +63,7 @@ public class ApiController {
 		
 		task.setNo(maxId+1);
 		tasks.addFirst(task);
+		taskRepository.insert(task);
 		
 		return ResponseEntity
 				.status(HttpStatus.OK)
@@ -72,14 +72,11 @@ public class ApiController {
 	
 	
 	@DeleteMapping("/task/{id}")
-	public ResponseEntity<JsonResult<Long>> delete(@PathVariable Long id, Long cardno){	
-		List<Task> tasks = taskRepository.findAllByCardNo(cardno);
-		
-		boolean result = tasks.removeIf(t -> t.getNo()==id);
+	public ResponseEntity<JsonResult<Long>> delete(@PathVariable Long id){	
 		
 		return ResponseEntity
 				.status(HttpStatus.OK)
-				.body(JsonResult.success((result) ? id : -1));
+				.body(JsonResult.success((taskRepository.delete(id)) ? id : -1));
 	}
 	
 	@PutMapping("/task/{id}")
@@ -91,11 +88,12 @@ public class ApiController {
 		optionalItem.ifPresent((Task t) -> {
 			if(isDone==1) {
 				t.setDone("Y");
+				taskRepository.updateDone(id, "Y");
 			} else {
 				t.setDone("N");
+				taskRepository.updateDone(id, "N");
 			};
 		});
-
 		
 		return ResponseEntity
 				.status(HttpStatus.OK)
