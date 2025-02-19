@@ -221,6 +221,7 @@ function App() {
 
     // update item
     const updateItem = async (id, item) => {
+        console.log(new URLSearchParams(item).toString());
         try{
             const response = await axios.put(`/item/${id}`, new URLSearchParams(item).toString(), {
                 headers: {
@@ -256,7 +257,9 @@ function App() {
 
     function onClickUpdate(e){
         e.preventDefault();
+        console.log(e.target);
         const item = serialize(e.target, {hash: true});
+        console.log(item);
         updateItem(modalData.itemId, item);
     }
 
