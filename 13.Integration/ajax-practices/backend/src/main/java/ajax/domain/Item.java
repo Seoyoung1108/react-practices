@@ -21,4 +21,7 @@ public class Item {
 
 	private String image;
 
+	public Item(Long id) {
+		this.id = id;
+	}
 }

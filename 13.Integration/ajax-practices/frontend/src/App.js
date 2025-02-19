@@ -20,10 +20,12 @@ ReactModal.setAppElement("body");
 
 function App() {
     const refCreateForm = useRef(null);
+    const refCreateWithImageForm = useRef(null);
     const [items, setItems] = useState(null);
 
     const [modalData, setModalData] = useState({
         open: false,
+        itemId: 0,
         itemType: '',
         itemName: ''
     })
@@ -67,6 +69,9 @@ function App() {
                 open: {
                     $set: true
                 },
+                itemId:{
+                    $set: id
+                },
                 itemName: {
                     $set: jsonResult.data.name
                 },
@@ -79,6 +84,7 @@ function App() {
             error.response ? `${error.response.status}` : error;
         }
     }
+
 
     // create item
 
@@ -141,9 +147,54 @@ function App() {
             console.error(error);
         }
     }
-    
-    function onClickCreateWithImage(){
 
+    const addItemWithImage = async (item) => {
+        try {
+            /*
+            const formData = new FormData();
+            formData.append("name", item.name);
+            formData.append("type", item.type);
+            formData.append("file", item.file);
+            */
+
+            const formData = Object.keys(item).reduce((formData, key) => {
+                formData.append(key,item[key]);
+                return formData;
+            }, new FormData());
+        
+            const response = await axios.post('/item', formData, {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+
+            const jsonResult = response.data;
+
+            setItems([jsonResult.data, ...items]);
+            refCreateWithImageForm.current.reset();
+        } catch(err) {
+            console.error(err);
+        }
+
+
+        
+    } 
+    
+    function onClickCreateWithImage(e){
+        e.preventDefault();
+
+        Array.from(e.target, (el) => {
+            if(el.name !== '' && el.value === '') {
+                throw new Error(`validation ${el.name} is empty`);
+            }
+            return null;
+        })
+
+        const item = serialize(e.target, {hash: true});
+        item['file'] = e.target['file'].files[0];
+
+        addItemWithImage(item);
     }
 
 
@@ -167,9 +218,46 @@ function App() {
         }
     }
 
+
     // update item
-    const updateItem = async (id) => {
-        
+    const updateItem = async (id, item) => {
+        try{
+            const response = await axios.put(`/item/${id}`, new URLSearchParams(item).toString(), {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            });
+            const jsonResult = response.data;
+            const index = items.findIndex((item) => item.id===jsonResult.data.id);
+
+            setItems([...items.slice(0,index), jsonResult.data, ...items.slice(index+1)]);
+            setModalData(update(modalData,{
+                open: {
+                    $set: false
+                },
+                itemId: {
+                    $set: 0
+                },
+                itemType: {
+                    $set: ''
+                },
+                itemName: {
+                    $set: ''
+                }
+            }))
+            
+
+        } catch(error) {
+            error.response ? `${error.response.status}` : error;
+        }
+
+    }
+
+    function onClickUpdate(e){
+        e.preventDefault();
+        const item = serialize(e.target, {hash: true});
+        updateItem(modalData.itemId, item);
     }
 
 
@@ -193,7 +281,7 @@ function App() {
                     <input type={'text'} name={'name'} placeholder={'name'}/>
                     <input type={'submit'} value={'[C]reate (post)'}/>
                 </form>
-                <form>
+                <form onSubmit={onClickCreateWithImage} ref={refCreateWithImageForm}>
                     <select name={'type'}>
                         <option>BOOK</option>
                         <option>CLOTHE</option>
@@ -226,8 +314,8 @@ function App() {
                             <span>
                                 <b>{index+1}</b>
                                 <i>{item.type}</i>
-                            </span>
-                            <img src={item.image || '/assets/images/no-image.png'} />
+                            </span>                          
+                            <ins style={{backgroundImage: `url(${item.image || '/assets/images/no-image.png'})`}} />
                         </div>
                     </Item>)
                 }
@@ -246,7 +334,7 @@ function App() {
                 overlayClassName={stylesModal.Overlay}
                 style={{content: {width: 280}}}>
                 <h3>Update Item</h3>
-                <form onSubmit={()=>{updateForm()}}>
+                <form onSubmit={onClickUpdate}>
                     <label>TYPE</label>
                     {' '}
                     <select name={'type'} value={modalData.itemType} onChange={(e)=>{

@@ -13,13 +13,19 @@ spring:
       static-path-pattern: /assets/**
    web:
       resources:
-         static-locations: classpath:/assets/
+         static-locations: [classpath:/assets/, file:/ajax-practices-uploads/]
    thymeleaf:      
       check-template-location: true
       enable-spring-el-compiler: true	  
       mode: HTML
       prefix: classpath:templates/      	  
       suffix : .html
+   servlet:
+      multipart:
+         enabled: true
+         file-size-threshold: 5242880
+         max-file-size: 10485760
+         max-request-size: 104857600
 
 server:
    error:
