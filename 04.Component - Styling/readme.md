@@ -48,7 +48,7 @@
    - module: true
    - styled-components 패키지 의존성 추가
 
-8. [과제] Glocery List SASS/SCSS 적용 (예제: ex08)
+8. Glocery List SASS/SCSS 적용 (예제: ex08)
    - options.modules: true
    - CSS 모듈 사용
    - SASS & SCSS 적용
