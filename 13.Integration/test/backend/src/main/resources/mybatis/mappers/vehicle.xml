@@ -3,7 +3,22 @@
 <mapper namespace="vehicle">
 	<select id="findAll" resultType="vehicle">
 		<![CDATA[	
-    		  select id, number, dep_datetime as depDatetime, driver_name as driverName, driver_birth as driverBirth, driver_phone as driverPhone, is_approved as isApproved, period, staff_name as staffName, staff_from as staffFrom, staff_phone as staffPhone from vehicle
+    		  select id, vehicle_number as number, vehicle_in_datetime as inDatetime, vehicle_out_datetime as outDatetime, driver_name as driverName, driver_birth as driverBirth, driver_phone_number as driverPhone, is_approved as isApproved, staff_name as staffName, staff_from as staffFrom, staff_phone as staffPhone from vehicle
 		]]>
 	</select>
+	<select id="findById" resultType="vehicle">
+		<![CDATA[	
+    		  select id, vehicle_number as number, vehicle_in_datetime as inDatetime, vehicle_out_datetime as outDatetime, driver_name as driverName, driver_birth as driverBirth, driver_phone_number as driverPhone, is_approved as isApproved, staff_name as staffName, staff_from as staffFrom, staff_phone as staffPhone from vehicle where id = #{id}
+		]]>
+	</select>
+	<insert id="insert" parameterType="vehicle">
+		<![CDATA[
+			insert into vehicle values (null, #{number}, #{inDatetime}, #{outDatetime}, #{driverName}, #{driverBirth}, #{driverPhone}, #{isApproved}, #{staffName}, #{staffFrom}, #{staffPhone})
+		]]>
+	</insert>
+	<update id="update" parameterType="vehicle">
+		<![CDATA[
+			update vehicle set is_approved = #{isApproved }  where id = #{id }
+		]]>
+	</update>
 </mapper>

@@ -10,12 +10,12 @@ import lombok.ToString;
 public class Vehicle {
 	private Long id;
 	private String number;
-	private String depDatetime;
+	private String inDatetime;
+	private String outDatetime;
 	private String driverName;
 	private String driverBirth;
 	private String driverPhone;
 	private String isApproved;
-	private String period;
 	private String staffName;
 	private String staffFrom;
 	private String staffPhone;

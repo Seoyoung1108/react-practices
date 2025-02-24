@@ -28,88 +28,49 @@ import kanbanboard.dto.JsonResult;
 public class ApiController {
 	private VehicleService vehicleService;
 
-	private final CardRepository cardRepository;
-	private final TaskRepository taskRepository;
-
-	public ApiController(CardRepository cardRepository, TaskRepository taskRepository,VehicleService vehicleService) {
-		this.cardRepository = cardRepository;
-		this.taskRepository = taskRepository;
+	public ApiController(VehicleService vehicleService) {
 		this.vehicleService = vehicleService;
 	}
 	
-	@GetMapping("/get")
+	// 차량 전체 정보 출력
+	@GetMapping("")
 	public ResponseEntity<JsonResult<List<Vehicle>>> readVehicles(){
 		
 		return ResponseEntity
 			.status(HttpStatus.OK)
-			.body(JsonResult.success(vehicleService.getVehicles()));
-		
+			.body(JsonResult.success(vehicleService.getVehicles()));	
 	}
-
-	@GetMapping("/card")
-	public ResponseEntity<JsonResult<List<Card>>> readCard(){
-		
+	
+	// 차량 개별 정보 출력
+	@GetMapping("/{id}")
+	public ResponseEntity<JsonResult<Vehicle>> readVehicle(@PathVariable Long id){
+	
 		return ResponseEntity
 			.status(HttpStatus.OK)
-			.body(JsonResult.success(cardRepository.findAll()));
-		
+			.body(JsonResult.success(vehicleService.getVehicle(id)));	
 	}
 	
-	@GetMapping("/task")
-	public ResponseEntity<JsonResult<List<Task>>> readTask(Long cardno){
-		
-		return ResponseEntity
-			.status(HttpStatus.OK)
-			.body(JsonResult.success(taskRepository.findAllByCardNo(cardno)));
-		
-	}
-	
-	@PostMapping("/task")
-	public ResponseEntity<JsonResult<Task>> create(@RequestBody Task task){		
-		List<Task> tasks = taskRepository.findAllByCardNo(task.getCardNo());
-		
-		Long maxId = Optional
-			.ofNullable(tasks.isEmpty()? null: tasks.getFirst())
-			.map(t -> t.getNo())
-			.orElse(0L);
-		// Empty일 수 있으므로
-		
-		task.setNo(maxId+1);
-		tasks.addFirst(task);
-		taskRepository.insert(task);
+	// 차량 등록
+	@PostMapping("")
+	public ResponseEntity<JsonResult<Vehicle>> createVehicle(@RequestBody Vehicle vehicle){		
+		vehicle.setIsApproved("N");
+		vehicleService.insertVehicle(vehicle);
 		
 		return ResponseEntity
 				.status(HttpStatus.OK)
-				.body(JsonResult.success(task));
+				.body(JsonResult.success(vehicle));
 	}
 	
-	
-	@DeleteMapping("/task/{id}")
-	public ResponseEntity<JsonResult<Long>> delete(@PathVariable Long id){	
+	// 차량 관리자 승인 여부 갱신
+	@PutMapping("/{id}/changeApproval")
+	public ResponseEntity<JsonResult<Vehicle>> update(@PathVariable Long id, String isApproved){
+		Vehicle vehicle = vehicleService.getVehicle(id);
+		
+		vehicle.setIsApproved(isApproved);
+		vehicleService.updateVehicle(vehicle);
 		
 		return ResponseEntity
 				.status(HttpStatus.OK)
-				.body(JsonResult.success((taskRepository.delete(id)) ? id : -1));
-	}
-	
-	@PutMapping("/task/{id}")
-	public ResponseEntity<JsonResult<Task>> update(@PathVariable Long id, Integer isDone, Long cardno){
-		List<Task> tasks = taskRepository.findAllByCardNo(cardno);
-		int index = tasks.indexOf(new Task(id));
-		
-		Optional<Task> optionalItem = Optional.ofNullable(index==-1? null : tasks.get(index)); // id에 해당하는 객체가 없을 경우 대비
-		optionalItem.ifPresent((Task t) -> {
-			if(isDone==1) {
-				t.setDone("Y");
-				taskRepository.updateDone(id, "Y");
-			} else {
-				t.setDone("N");
-				taskRepository.updateDone(id, "N");
-			};
-		});
-		
-		return ResponseEntity
-				.status(HttpStatus.OK)
-				.body(JsonResult.success(optionalItem.orElse(null)));
+				.body(JsonResult.success(vehicle));
 	}
 }

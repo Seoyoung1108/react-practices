@@ -14,9 +14,23 @@ public class VehicleService {
 	public VehicleService(VehicleRepository vehicleRepository){
 		this.vehicleRepository = vehicleRepository;
 	}
+	
 	public List<Vehicle> getVehicles() {
-		// TODO Auto-generated method stub
 		return vehicleRepository.findAll();
 	}
+	
+	public Vehicle getVehicle(Long id) {
+		return vehicleRepository.findById(id);
+	}
+	
+	public void insertVehicle(Vehicle vehicle) {
+		vehicleRepository.insert(vehicle);
+		
+	}
+
+	public void updateVehicle(Vehicle vehicle) {
+		vehicleRepository.update(vehicle);
+	}
+	
 
 }

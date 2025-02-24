@@ -17,7 +17,21 @@ public class VehicleRepository {
 	}
 	
 	public List<Vehicle> findAll() {
-		System.out.println(sqlSession.selectList("vehicle.findAll"));
 		return sqlSession.selectList("vehicle.findAll");
 	}
+	
+	public Vehicle findById(Long id) {
+		return sqlSession.selectOne("vehicle.findById", id);
+	}
+
+	public int insert(Vehicle vehicle) {
+		return sqlSession.insert("vehicle.insert", vehicle);
+		
+	}
+
+	public int update(Vehicle vehicle) {
+		return sqlSession.update("vehicle.update", vehicle);
+	}
+
+	
 }
