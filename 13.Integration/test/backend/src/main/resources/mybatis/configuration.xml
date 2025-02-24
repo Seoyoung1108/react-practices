@@ -6,14 +6,10 @@
     </settings>
     	
 	<typeAliases>
-		<typeAlias type="kanbanboard.domain.Vehicle" alias="vehicle" />
-		<typeAlias type="kanbanboard.domain.Card" alias="card" />
-		<typeAlias type="kanbanboard.domain.Task" alias="task" />
+		<typeAlias type="vehicle.domain.Vehicle" alias="vehicle" />
 	</typeAliases>
 
 	<mappers>
 		<mapper resource="mybatis/mappers/vehicle.xml" />
-		<mapper resource="mybatis/mappers/card.xml" />
-		<mapper resource="mybatis/mappers/task.xml" />
 	</mappers>
 </configuration>

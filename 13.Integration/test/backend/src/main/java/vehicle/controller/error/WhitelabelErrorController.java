@@ -1,16 +1,16 @@
-package kanbanboard.controller.error;
+package vehicle.controller.error;
 
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
+import vehicle.dto.JsonResult;
+
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import kanbanboard.dto.JsonResult;
 
 import java.util.Optional;
 

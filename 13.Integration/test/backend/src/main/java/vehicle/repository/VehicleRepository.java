@@ -1,12 +1,11 @@
-package kanbanboard.repository;
+package vehicle.repository;
 
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import kanbanboard.domain.Card;
-import kanbanboard.domain.Vehicle;
+import vehicle.domain.Vehicle;
 
 @Repository
 public class VehicleRepository {

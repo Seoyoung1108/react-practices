@@ -1,4 +1,4 @@
-package kanbanboard.dto;
+package vehicle.dto;
 
 import lombok.Getter;
 

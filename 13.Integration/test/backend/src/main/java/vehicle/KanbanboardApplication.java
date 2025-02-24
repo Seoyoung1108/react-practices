@@ -1,4 +1,4 @@
-package kanbanboard;
+package vehicle;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.jdbc.ScriptRunner;

@@ -1,11 +1,11 @@
-package kanbanboard.service;
+package vehicle.service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import kanbanboard.domain.Vehicle;
-import kanbanboard.repository.VehicleRepository;
+import vehicle.domain.Vehicle;
+import vehicle.repository.VehicleRepository;
 
 @Service
 public class VehicleService {

@@ -1,4 +1,4 @@
-package kanbanboard.exception;
+package vehicle.exception;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

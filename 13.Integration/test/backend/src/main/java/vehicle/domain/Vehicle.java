@@ -1,4 +1,4 @@
-package kanbanboard.domain;
+package vehicle.domain;
 
 import lombok.Getter;
 import lombok.Setter;

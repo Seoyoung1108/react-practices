@@ -1,4 +1,4 @@
-package kanbanboard.controller.landing;
+package vehicle.controller.landing;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
